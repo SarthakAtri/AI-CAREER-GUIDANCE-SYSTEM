@@ -29,7 +29,7 @@ SKILL_FIELDS = [
 
 
 def init_db():
-    """Create the table if it doesn't exist (needed on a fresh server)."""
+    """Create the table if it doesn't exist."""
     with sqlite3.connect(DB_PATH) as conn:
         conn.execute(
             """
@@ -78,26 +78,21 @@ def predict():
     # Predict career + top 5 probabilities
     prediction = model.predict(student)[0]
     probabilities = model.predict_proba(student)[0]
+
     results = sorted(
-        zip(model.classes_, probabilities), key=lambda x: x[1], reverse=True
+        zip(model.classes_, probabilities),
+        key=lambda x: x[1],
+        reverse=True
     )
+
     top_results = results[:5]
 
-    # Save to database
-    with sqlite3.connect(DB_PATH) as conn:
-        conn.execute(
-            """
-            INSERT INTO assessments (
-                branch, programming, analytical_reasoning, hardware,
-                mathematics, communication, data_structures,
-                operating_systems, networking, digital_electronics,
-                machine_learning, predicted_career
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            (branch, *[skills[f] for f in SKILL_FIELDS], prediction),
-        )
-
-    return render_template("result.html", prediction=prediction, results=top_results)
+    # Show prediction result
+    return render_template(
+        "result.html",
+        prediction=prediction,
+        results=top_results
+    )
 
 
 if __name__ == "__main__":
