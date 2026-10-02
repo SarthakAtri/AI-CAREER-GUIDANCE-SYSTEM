@@ -84,6 +84,66 @@
 
     <div class="result-card">
 
+        {% if success %}
+
+        <!-- ================= SUCCESS MESSAGE ================= -->
+
+        <div class="feedback-section"
+             style="text-align: center; padding: 60px 30px;">
+
+            <p class="section-small">
+                FEEDBACK SUBMITTED
+            </p>
+
+            <h3 style="font-size: 32px; margin-bottom: 18px;">
+                Thank You! 🎉
+            </h3>
+
+            <p class="feedback-description"
+               style="font-size: 17px; margin-bottom: 30px;">
+
+                Your feedback has been submitted successfully.
+                Thank you for helping us improve the
+                CareerGuide system.
+
+            </p>
+
+
+            <div class="result-action"
+                 style="justify-content: center;">
+
+                <a href="/"
+                   class="assessment-button result-button">
+
+                    Back to Home
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+                <a href="/feedback"
+                   class="assessment-button result-button">
+
+                    Submit Another Feedback
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        {% else %}
+
+
+        <!-- ================= FEEDBACK FORM ================= -->
+
         <div class="feedback-section">
 
             <p class="section-small">
@@ -296,6 +356,9 @@
             </a>
 
         </div>
+
+
+        {% endif %}
 
     </div>
 
