@@ -134,7 +134,6 @@
 
             <div class="career-result">
 
-
                 <div class="career-info">
 
                     <span class="career-title">
@@ -156,10 +155,127 @@
 
                 </div>
 
-
             </div>
 
             {% endfor %}
+
+        </div>
+
+
+        <!-- ================= FEEDBACK ================= -->
+
+        <div class="feedback-section">
+
+            <p class="section-small">
+                YOUR FEEDBACK
+            </p>
+
+            <h3>
+                How was your experience?
+            </h3>
+
+            <p class="feedback-description">
+                Your feedback helps us improve the CareerGuide
+                experience.
+            </p>
+
+
+            <form action="/feedback" method="POST"
+                  class="feedback-form">
+
+
+                <!-- NAME -->
+
+                <div class="feedback-field">
+
+                    <label for="name">
+                        Name <span>(Optional)</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your name">
+                    
+                </div>
+
+
+                <!-- RATING -->
+
+                <div class="feedback-field">
+
+                    <label for="rating">
+                        Rating
+                    </label>
+
+                    <select
+                        id="rating"
+                        name="rating"
+                        required>
+
+                        <option value="">
+                            Select rating
+                        </option>
+
+                        <option value="5">
+                            ⭐⭐⭐⭐⭐ Excellent
+                        </option>
+
+                        <option value="4">
+                            ⭐⭐⭐⭐ Good
+                        </option>
+
+                        <option value="3">
+                            ⭐⭐⭐ Average
+                        </option>
+
+                        <option value="2">
+                            ⭐⭐ Poor
+                        </option>
+
+                        <option value="1">
+                            ⭐ Very Poor
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- FEEDBACK -->
+
+                <div class="feedback-field">
+
+                    <label for="message">
+                        Your Feedback
+                    </label>
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="5"
+                        placeholder="Tell us what you think..."
+                        required></textarea>
+
+                </div>
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="assessment-button feedback-button">
+
+                    Submit Feedback
+
+                    <span>
+                        →
+                    </span>
+
+                </button>
+
+            </form>
 
         </div>
 
