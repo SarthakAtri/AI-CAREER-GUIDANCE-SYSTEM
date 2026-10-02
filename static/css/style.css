@@ -1,0 +1,1013 @@
+/* =========================
+   GLOBAL
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f8fc;
+    color: #1f2937;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+    width: 100%;
+    height: 76px;
+    padding: 0 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 800;
+    color: #1f2937;
+}
+
+.logo span {
+    color: #5b5ce2;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 38px;
+}
+
+.nav-links a {
+    font-size: 15px;
+    font-weight: 600;
+    color: #374151;
+
+    transition: 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #5b5ce2;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    min-height: 650px;
+    padding: 80px 8%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 60px;
+
+    background:
+        radial-gradient(
+            circle at 80% 30%,
+            rgba(91, 92, 226, 0.12),
+            transparent 35%
+        ),
+        #f7f8fc;
+}
+
+.hero-content {
+    max-width: 610px;
+}
+
+.hero-small {
+    color: #5b5ce2;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 18px;
+}
+
+.hero h1 {
+    font-size: 64px;
+    line-height: 1.08;
+    letter-spacing: -2px;
+    margin-bottom: 25px;
+    color: #172033;
+}
+
+.hero h1 span {
+    display: block;
+    color: #5b5ce2;
+}
+
+.hero-description {
+    max-width: 520px;
+    font-size: 19px;
+    color: #6b7280;
+    margin-bottom: 35px;
+}
+
+.hero-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 15px 28px;
+
+    border-radius: 8px;
+
+    background: #5b5ce2;
+    color: white;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    box-shadow: 0 10px 25px rgba(91, 92, 226, 0.25);
+
+    transition: 0.3s ease;
+}
+
+.hero-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(91, 92, 226, 0.35);
+}
+
+
+/* =========================
+   HERO VISUAL
+========================= */
+
+.hero-visual {
+    width: 430px;
+    height: 430px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.career-circle {
+    width: 370px;
+    height: 370px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow:
+        0 25px 70px rgba(31, 41, 55, 0.12);
+
+    border: 1px solid #eeeeee;
+}
+
+.career-circle::before {
+    content: "";
+
+    position: absolute;
+
+    width: 285px;
+    height: 285px;
+
+    border-radius: 50%;
+
+    border: 1px dashed #cfd2ff;
+}
+
+.career-center {
+    width: 155px;
+    height: 155px;
+
+    border-radius: 50%;
+
+    background: #5b5ce2;
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+    z-index: 2;
+
+    box-shadow: 0 15px 35px rgba(91, 92, 226, 0.3);
+}
+
+.center-icon {
+    font-size: 34px;
+    margin-bottom: 5px;
+}
+
+.career-center strong {
+    font-size: 16px;
+}
+
+.career-center span {
+    font-size: 13px;
+    opacity: 0.85;
+}
+
+.career-icon {
+    position: absolute;
+
+    width: 64px;
+    height: 64px;
+
+    border-radius: 18px;
+
+    background: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 27px;
+
+    box-shadow:
+        0 12px 30px rgba(31, 41, 55, 0.12);
+
+    z-index: 3;
+}
+
+.icon-1 {
+    top: 30px;
+    left: 75px;
+}
+
+.icon-2 {
+    top: 65px;
+    right: 55px;
+}
+
+.icon-3 {
+    bottom: 55px;
+    right: 50px;
+}
+
+.icon-4 {
+    bottom: 35px;
+    left: 75px;
+}
+
+
+/* =========================
+   SECTION COMMON
+========================= */
+
+.about-section,
+.assessment-section,
+.how-section {
+    padding: 100px 8%;
+}
+
+.section-heading {
+    max-width: 700px;
+    margin: 0 auto 55px;
+
+    text-align: center;
+}
+
+.section-small {
+    color: #5b5ce2;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.section-heading h2 {
+    font-size: 42px;
+    line-height: 1.15;
+    margin-bottom: 15px;
+    color: #172033;
+}
+
+.section-heading h2 span {
+    color: #5b5ce2;
+}
+
+.section-heading > p:last-child {
+    color: #6b7280;
+    font-size: 17px;
+}
+
+
+/* =========================
+   ABOUT / FEATURES
+========================= */
+
+.about-section {
+    background: white;
+}
+
+.feature-grid {
+    max-width: 1100px;
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 25px;
+}
+
+.feature-card {
+    padding: 35px 30px;
+
+    border: 1px solid #eeeeee;
+    border-radius: 18px;
+
+    background: white;
+
+    transition: 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-7px);
+
+    box-shadow:
+        0 20px 45px rgba(31, 41, 55, 0.09);
+}
+
+.feature-icon {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background: #eef0ff;
+
+    font-size: 26px;
+
+    margin-bottom: 22px;
+}
+
+.feature-card h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+    color: #6b7280;
+    font-size: 15px;
+}
+
+
+/* =========================
+   ASSESSMENT
+========================= */
+
+.assessment-section {
+    background: #f7f8fc;
+}
+
+.assessment-card {
+    max-width: 1050px;
+    margin: auto;
+
+    padding: 45px;
+
+    background: white;
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 20px 60px rgba(31, 41, 55, 0.08);
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    column-gap: 30px;
+    row-gap: 5px;
+}
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.form-group label {
+    display: block;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    margin-bottom: 8px;
+
+    color: #273142;
+}
+
+select {
+    width: 100%;
+
+    padding: 14px 15px;
+
+    border: 1px solid #dfe3ea;
+
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: #374151;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+select:hover {
+    border-color: #b9bce9;
+}
+
+select:focus {
+    outline: none;
+
+    border-color: #5b5ce2;
+
+    box-shadow:
+        0 0 0 3px rgba(91, 92, 226, 0.10);
+}
+
+.assessment-button {
+    width: 100%;
+
+    margin-top: 15px;
+
+    padding: 16px 22px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #5b5ce2;
+    color: white;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+
+    box-shadow:
+        0 10px 25px rgba(91, 92, 226, 0.20);
+}
+
+.assessment-button span {
+    margin-left: 8px;
+    font-size: 20px;
+}
+
+.assessment-button:hover {
+    background: #4b4ccf;
+    transform: translateY(-2px);
+}
+
+
+/* =========================
+   HOW IT WORKS
+========================= */
+
+.how-section {
+    background: white;
+}
+
+.steps-grid {
+    max-width: 1100px;
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 25px;
+}
+
+.step-card {
+    padding: 35px;
+
+    border-radius: 18px;
+
+    background: #f7f8fc;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+.step-number {
+    font-size: 48px;
+    font-weight: 800;
+
+    color: #e2e4ff;
+
+    margin-bottom: 10px;
+}
+
+.step-card h3 {
+    font-size: 21px;
+    margin-bottom: 10px;
+}
+
+.step-card p {
+    color: #6b7280;
+    font-size: 15px;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    padding: 45px 20px;
+
+    text-align: center;
+
+    background: #172033;
+
+    color: white;
+}
+
+.footer-logo {
+    font-size: 25px;
+    font-weight: 800;
+
+    margin-bottom: 8px;
+}
+
+.footer-logo span {
+    color: #8b8df0;
+}
+
+footer p {
+    color: #c6cad4;
+    font-size: 14px;
+}
+
+.footer-copy {
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+    .navbar {
+        padding: 0 5%;
+    }
+
+    .nav-links {
+        gap: 18px;
+    }
+
+    .hero {
+        padding: 70px 6%;
+
+        flex-direction: column;
+
+        text-align: center;
+    }
+
+    .hero-content {
+        max-width: 700px;
+    }
+
+    .hero-description {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero h1 {
+        font-size: 50px;
+    }
+
+    .feature-grid,
+    .steps-grid {
+        grid-template-columns: 1fr;
+        max-width: 550px;
+    }
+
+    .assessment-card {
+        padding: 30px;
+    }
+}
+
+
+@media (max-width: 650px) {
+
+    .navbar {
+        height: auto;
+        padding: 18px 20px;
+
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+    .nav-links {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav-links a {
+        font-size: 13px;
+    }
+
+    .hero {
+        padding: 60px 20px;
+    }
+
+    .hero h1 {
+        font-size: 40px;
+        letter-spacing: -1px;
+    }
+
+    .hero-description {
+        font-size: 16px;
+    }
+
+    .hero-visual {
+        width: 320px;
+        height: 320px;
+    }
+
+    .career-circle {
+        width: 280px;
+        height: 280px;
+    }
+
+    .career-circle::before {
+        width: 215px;
+        height: 215px;
+    }
+
+    .career-center {
+        width: 120px;
+        height: 120px;
+    }
+
+    .career-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 22px;
+        border-radius: 14px;
+    }
+
+    .icon-1 {
+        top: 25px;
+        left: 55px;
+    }
+
+    .icon-2 {
+        top: 50px;
+        right: 35px;
+    }
+
+    .icon-3 {
+        bottom: 40px;
+        right: 35px;
+    }
+
+    .icon-4 {
+        bottom: 25px;
+        left: 55px;
+    }
+
+    .about-section,
+    .assessment-section,
+    .how-section {
+        padding: 70px 20px;
+    }
+
+    .section-heading h2 {
+        font-size: 32px;
+    }
+
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .assessment-card {
+        padding: 25px 20px;
+    }
+}
+/* =========================
+   RESULT PAGE
+========================= */
+
+.result-hero {
+    padding: 85px 8% 70px;
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle at 50% 20%,
+            rgba(91, 92, 226, 0.12),
+            transparent 40%
+        ),
+        #f7f8fc;
+}
+
+.result-hero-content {
+    max-width: 760px;
+    margin: auto;
+}
+
+.result-hero h1 {
+    font-size: 52px;
+    line-height: 1.15;
+    color: #172033;
+    margin-bottom: 20px;
+}
+
+.result-hero h1 span {
+    display: block;
+    color: #5b5ce2;
+}
+
+.result-hero-content > p:last-child {
+    max-width: 650px;
+    margin: auto;
+
+    color: #6b7280;
+    font-size: 17px;
+}
+
+
+/* =========================
+   RESULT SECTION
+========================= */
+
+.result-section {
+    padding: 0 8% 100px;
+    background: #f7f8fc;
+}
+
+.result-card {
+    max-width: 1000px;
+    margin: auto;
+
+    background: white;
+
+    border-radius: 22px;
+
+    padding: 50px;
+
+    box-shadow:
+        0 20px 60px rgba(31, 41, 55, 0.08);
+}
+
+
+/* =========================
+   RECOMMENDATION
+========================= */
+
+.recommendation {
+    text-align: center;
+
+    padding-bottom: 45px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.recommendation-icon {
+    width: 72px;
+    height: 72px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background: #eef0ff;
+
+    font-size: 32px;
+}
+
+.result-label {
+    color: #5b5ce2;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 10px;
+}
+
+.recommendation h2 {
+    font-size: 38px;
+
+    color: #172033;
+
+    margin-bottom: 12px;
+}
+
+.recommendation-text {
+    max-width: 650px;
+
+    margin: auto;
+
+    color: #6b7280;
+
+    font-size: 15px;
+}
+
+
+/* =========================
+   PREDICTIONS
+========================= */
+
+.predictions {
+    padding-top: 45px;
+}
+
+.prediction-heading h3 {
+    font-size: 28px;
+
+    color: #172033;
+
+    margin-top: 5px;
+}
+
+.prediction-description {
+    color: #6b7280;
+
+    font-size: 15px;
+
+    margin: 8px 0 30px;
+}
+
+.career-result {
+    margin-bottom: 24px;
+}
+
+.career-info {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 9px;
+}
+
+.career-title {
+    font-size: 15px;
+
+    font-weight: 600;
+
+    color: #273142;
+}
+
+.career-info strong {
+    font-size: 15px;
+
+    color: #273142;
+}
+
+
+/* =========================
+   PROGRESS BAR
+========================= */
+
+.progress-bar {
+    width: 100%;
+
+    height: 11px;
+
+    background: #e8e9ef;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+
+    background: linear-gradient(
+        90deg,
+        #5b5ce2,
+        #7779ee
+    );
+
+    border-radius: 20px;
+
+    transition: width 0.7s ease;
+}
+
+
+/* =========================
+   RESULT ACTION
+========================= */
+
+.result-action {
+    margin-top: 35px;
+}
+
+.result-button {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 100%;
+
+    color: white;
+
+    border-radius: 9px;
+
+    box-shadow:
+        0 10px 25px rgba(91, 92, 226, 0.20);
+}
+
+.result-button span {
+    margin-left: 8px;
+}
+
+
+/* =========================
+   RESULT RESPONSIVE
+========================= */
+
+@media (max-width: 650px) {
+
+    .result-hero {
+        padding: 65px 20px 55px;
+    }
+
+    .result-hero h1 {
+        font-size: 38px;
+    }
+
+    .result-hero-content > p:last-child {
+        font-size: 15px;
+    }
+
+    .result-section {
+        padding: 0 20px 70px;
+    }
+
+    .result-card {
+        padding: 30px 20px;
+
+        border-radius: 18px;
+    }
+
+    .recommendation h2 {
+        font-size: 29px;
+    }
+
+    .prediction-heading h3 {
+        font-size: 23px;
+    }
+}

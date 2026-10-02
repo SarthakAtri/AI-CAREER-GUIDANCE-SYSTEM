@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Career Recommendation</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        Career<span>Guide</span>
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/#about">
+            About
+        </a>
+
+        <a href="/#assessment">
+            Assessment
+        </a>
+
+        <a href="/#how-it-works">
+            How It Works
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= RESULT HERO ================= -->
+
+<section class="result-hero">
+
+    <div class="result-hero-content">
+
+        <p class="hero-small">
+            YOUR CAREER ASSESSMENT
+        </p>
+
+        <h1>
+            Your Career
+            <span>Recommendation</span>
+        </h1>
+
+        <p>
+            Based on the skills and interests you provided,
+            our machine learning model generated the following
+            career recommendations.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= MAIN RESULT ================= -->
+
+<section class="result-section">
+
+    <div class="result-card">
+
+
+        <!-- MAIN RECOMMENDATION -->
+
+        <div class="recommendation">
+
+            <div class="recommendation-icon">
+                🎯
+            </div>
+
+            <p class="result-label">
+                RECOMMENDED CAREER
+            </p>
+
+            <h2>
+                {{ prediction }}
+            </h2>
+
+            <p class="recommendation-text">
+                This career received the highest prediction
+                from the Random Forest model based on your
+                assessment responses.
+            </p>
+
+        </div>
+
+
+        <!-- TOP PREDICTIONS -->
+
+        <div class="predictions">
+
+            <div class="prediction-heading">
+
+                <div>
+
+                    <p class="section-small">
+                        CAREER MATCHES
+                    </p>
+
+                    <h3>
+                        Top Career Predictions
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <p class="prediction-description">
+                The model's predicted probability for the
+                top career options is shown below.
+            </p>
+
+
+            {% for career, probability in results %}
+
+            <div class="career-result">
+
+
+                <div class="career-info">
+
+                    <span class="career-title">
+                        {{ career }}
+                    </span>
+
+                    <strong>
+                        {{ "%.2f"|format(probability * 100) }}%
+                    </strong>
+
+                </div>
+
+
+                <div class="progress-bar">
+
+                    <div class="progress"
+                         style="width: {{ probability * 100 }}%;">
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- ACTION -->
+
+        <div class="result-action">
+
+            <a href="/"
+               class="assessment-button result-button">
+
+                Take Assessment Again
+
+                <span>
+                    →
+                </span>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-logo">
+        Career<span>Guide</span>
+    </div>
+
+    <p>
+        AI Career Guidance System
+    </p>
+
+    <p class="footer-copy">
+        Built with Python, Flask, Pandas & Machine Learning
+    </p>
+
+</footer>
+
+
+</body>
+</html>

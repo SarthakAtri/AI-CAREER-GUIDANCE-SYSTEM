@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Career Guidance System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        Career<span>Guide</span>
+    </div>
+
+    <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#assessment">Assessment</a>
+        <a href="#how-it-works">How It Works</a>
+    </div>
+
+</nav>
+
+
+<!-- ================= HERO SECTION ================= -->
+
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <p class="hero-small">
+            AI POWERED CAREER GUIDANCE
+        </p>
+
+        <h1>
+            Find the Career
+            <span>That Fits You</span>
+        </h1>
+
+        <p class="hero-description">
+            Discover career paths based on your skills,
+            interests and academic background.
+        </p>
+
+        <a href="#assessment" class="hero-button">
+            Start Assessment
+        </a>
+
+    </div>
+
+
+    <div class="hero-visual">
+
+        <div class="career-circle">
+
+            <div class="career-icon icon-1">
+                💻
+            </div>
+
+            <div class="career-icon icon-2">
+                🤖
+            </div>
+
+            <div class="career-icon icon-3">
+                🔐
+            </div>
+
+            <div class="career-icon icon-4">
+                📊
+            </div>
+
+            <div class="career-center">
+                <div class="center-icon">
+                    🎯
+                </div>
+
+                <strong>
+                    Your Career
+                </strong>
+
+                <span>
+                    Starts Here
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ABOUT SECTION ================= -->
+
+<section class="about-section" id="about">
+
+    <div class="section-heading">
+
+        <p class="section-small">
+            SMART CAREER DISCOVERY
+        </p>
+
+        <h2>
+            Make Your Skills
+            <span>Work For You</span>
+        </h2>
+
+        <p>
+            This system analyzes your skills and interests
+            to generate career recommendations using a
+            machine learning model.
+        </p>
+
+    </div>
+
+
+    <div class="feature-grid">
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🧠
+            </div>
+
+            <h3>
+                Skill Based
+            </h3>
+
+            <p>
+                Your career recommendation is based on
+                your skill ratings and interests.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🤖
+            </div>
+
+            <h3>
+                Machine Learning
+            </h3>
+
+            <p>
+                A Random Forest model analyzes your
+                assessment and predicts suitable careers.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🎯
+            </div>
+
+            <h3>
+                Career Matching
+            </h3>
+
+            <p>
+                Get your recommended career along with
+                other possible career matches.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ASSESSMENT SECTION ================= -->
+
+<section class="assessment-section" id="assessment">
+
+    <div class="section-heading">
+
+        <p class="section-small">
+            CAREER ASSESSMENT
+        </p>
+
+        <h2>
+            Tell Us About
+            <span>Your Skills</span>
+        </h2>
+
+        <p>
+            Rate each skill from 0 to 4 according to
+            your current interest or ability.
+        </p>
+
+    </div>
+
+
+    <div class="assessment-card">
+
+        <form action="/predict" method="POST">
+
+
+            <!-- BRANCH -->
+
+            <div class="form-group full-width">
+
+                <label for="branch">
+                    Engineering Branch
+                </label>
+
+                <select name="branch" id="branch" required>
+
+                    <option value="" disabled selected>
+                        Select your branch
+                    </option>
+
+                    <option value="CSE">
+                        Computer Science Engineering
+                    </option>
+
+                    <option value="IT">
+                        Information Technology
+                    </option>
+
+                    <option value="ECE">
+                        Electronics & Communication Engineering
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="skills-grid">
+
+
+                <!-- PROGRAMMING -->
+
+                <div class="form-group">
+
+                    <label for="programming">
+                        Programming
+                    </label>
+
+                    <select name="programming"
+                            id="programming"
+                            required>
+
+                        <option value="" disabled selected>
+                            Select rating
+                        </option>
+
+                        <option value="0">
+                            0 - Not Interested
+                        </option>
+
+                        <option value="1">
+                            1 - Low
+                        </option>
+
+                        <option value="2">
+                            2 - Average
+                        </option>
+
+                        <option value="3">
+                            3 - Good
+                        </option>
+
+                        <option value="4">
+                            4 - Excellent
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ANALYTICAL REASONING -->
+
+                <div class="form-group">
+
+                    <label for="analytical_reasoning">
+                        Analytical Reasoning
+                    </label>
+
+                    <select name="analytical_reasoning"
+                            id="analytical_reasoning"
+                            required>
+
+                        <option value="" disabled selected>
+                            Select rating
+                        </option>
+
+                        <option value="0">0 - Not Interested</option>
+                        <option value="1">1 - Low</option>
+                        <option value="2">2 - Average</option>
+                        <option value="3">3 - Good</option>
+                        <option value="4">4 - Excellent</option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- HARDWARE -->
+
+                <div class="form-group">
+
+                    <label for="hardware">
+                        Hardware
+                    </label>
+
+                    <select name="hardware"
+                            id="hardware"
+                            required>
+
+                        <option value="" disabled selected>
+                            Select rating
+                        </option>
+
+                        <option value="0">0 - Not Interested</option>
+                        <option value="1">1 - Low</option>
+                        <option value="2">2 - Average</option>
+                        <option value="3">3 - Good</option>
+                        <option value="4">4 - Excellent</option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- MATHEMATICS -->
+
+                <div class="form-group">
+
+                    <label for="mathematics">
+                        Mathematics
+                    </label>
+
+                    <select name="mathematics"
+                            id="mathematics"
+                            required>
+
+                        <option value="" disabled selected>
+                            Select rating
+                        </option>
+
+                        <option value="0">0 - Not Interested</option>
+                        <option value="1">1 - Low</option>
+                        <option value="2">2 - Average</option>
+                        <option value="3">3 - Good</option>
+                        <option value="4">4 - Excellent</option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- COMMUNICATION -->
+
+                <div class="form-group">
+
+                    <label for="communication">
+                        Communication
+                    </label>
+
+                    <select name="communication"
+                            id="communication"
+                            required>
+
+                        <option value="" disabled selected>
+                            Select rating
+                        </option>
+
+                        <option value="0">0 - Not Interested</option>
+                        <option value="1">1 - Low</option>
+                        <option value="2">2 - Average</option>
+                        <option value="3">3 - Good</option>
+                        <option value="4">4 - Excellent</option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- DATA STRUCTURES -->
+
+                <div class="form-group">
+
+                    <label for="data_structures">
+                        Data Structures
+                    </label>
+
+                    <select name="data_structures"
+                            id="data_structures"
+                            required>
+
+                        <option value="" disabled selected>
+                            Select rating
+                        </option>
+
+                        <option value="0">0 - Not Interested</option>
+                        <option value="1">1 - Low</option>
+                        <option value="2">2 - Average</option>
+                        <option value="3">3 - Good</option>
+                        <option value="4">4 - Excellent</option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- OPERATING SYSTEMS -->
+
+                <div class="form-group">
+
+                    <label for="operating_systems">
+                        Operating Systems
+                    </label>
+
+                    <select name="operating_systems"
+                            id="operating_systems"
+                            required>
+
+                        <option value="" disabled selected>
+                            Select rating
+                        </option>
+
+                        <option value="0">0 - Not Interested</option>
+                        <option value="1">1 - Low</option>
+                        <option value="2">2 - Average</option>
+                        <option value="3">3 - Good</option>
+                        <option value="4">4 - Excellent</option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- NETWORKING -->
+
+                <div class="form-group">
+
+                    <label for="networking">
+                        Networking
+                    </label>
+
+                    <select name="networking"
+                            id="networking"
+                            required>
+
+                        <option value="" disabled selected>
+                            Select rating
+                        </option>
+
+                        <option value="0">0 - Not Interested</option>
+                        <option value="1">1 - Low</option>
+                        <option value="2">2 - Average</option>
+                        <option value="3">3 - Good</option>
+                        <option value="4">4 - Excellent</option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- DIGITAL ELECTRONICS -->
+
+                <div class="form-group">
+
+                    <label for="digital_electronics">
+                        Digital Electronics
+                    </label>
+
+                    <select name="digital_electronics"
+                            id="digital_electronics"
+                            required>
+
+                        <option value="" disabled selected>
+                            Select rating
+                        </option>
+
+                        <option value="0">0 - Not Interested</option>
+                        <option value="1">1 - Low</option>
+                        <option value="2">2 - Average</option>
+                        <option value="3">3 - Good</option>
+                        <option value="4">4 - Excellent</option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- MACHINE LEARNING -->
+
+                <div class="form-group">
+
+                    <label for="machine_learning">
+                        Machine Learning
+                    </label>
+
+                    <select name="machine_learning"
+                            id="machine_learning"
+                            required>
+
+                        <option value="" disabled selected>
+                            Select rating
+                        </option>
+
+                        <option value="0">0 - Not Interested</option>
+                        <option value="1">1 - Low</option>
+                        <option value="2">2 - Average</option>
+                        <option value="3">3 - Good</option>
+                        <option value="4">4 - Excellent</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- SUBMIT -->
+
+            <button type="submit" class="assessment-button">
+                Get Career Recommendation
+                <span>→</span>
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- ================= HOW IT WORKS ================= -->
+
+<section class="how-section" id="how-it-works">
+
+    <div class="section-heading">
+
+        <p class="section-small">
+            HOW IT WORKS
+        </p>
+
+        <h2>
+            Three Simple
+            <span>Steps</span>
+        </h2>
+
+    </div>
+
+
+    <div class="steps-grid">
+
+        <div class="step-card">
+
+            <div class="step-number">
+                01
+            </div>
+
+            <h3>
+                Rate Your Skills
+            </h3>
+
+            <p>
+                Tell us about your programming,
+                analytical, communication and
+                technical skills.
+            </p>
+
+        </div>
+
+
+        <div class="step-card">
+
+            <div class="step-number">
+                02
+            </div>
+
+            <h3>
+                AI Analysis
+            </h3>
+
+            <p>
+                The machine learning model analyzes
+                your assessment responses.
+            </p>
+
+        </div>
+
+
+        <div class="step-card">
+
+            <div class="step-number">
+                03
+            </div>
+
+            <h3>
+                Get Your Result
+            </h3>
+
+            <p>
+                Receive a recommended career along
+                with other possible career matches.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-logo">
+        Career<span>Guide</span>
+    </div>
+
+    <p>
+        AI Career Guidance System
+    </p>
+
+    <p class="footer-copy">
+        Built with Python, Flask, Pandas & Machine Learning
+    </p>
+
+</footer>
+
+
+</body>
+</html>
