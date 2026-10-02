@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Feedback | CareerGuide</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        Career<span>Guide</span>
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/#about">
+            About
+        </a>
+
+        <a href="/#assessment">
+            Assessment
+        </a>
+
+        <a href="/#how-it-works">
+            How It Works
+        </a>
+
+        <a href="/feedback">
+            Feedback
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= FEEDBACK HERO ================= -->
+
+<section class="result-hero">
+
+    <div class="result-hero-content">
+
+        <p class="hero-small">
+            USER FEEDBACK
+        </p>
+
+        <h1>
+            Share Your
+            <span>Experience</span>
+        </h1>
+
+        <p>
+            Your feedback helps us evaluate and improve
+            the CareerGuide system.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FEEDBACK SECTION ================= -->
+
+<section class="result-section">
+
+    <div class="result-card">
+
+        <div class="feedback-section">
+
+            <p class="section-small">
+                FEEDBACK FORM
+            </p>
+
+            <h3>
+                Help Us Improve CareerGuide
+            </h3>
+
+            <p class="feedback-description">
+                Please answer the following questions based
+                on your experience using the career guidance
+                system.
+            </p>
+
+
+            <form action="/feedback"
+                  method="POST"
+                  class="feedback-form">
+
+
+                <!-- NAME -->
+
+                <div class="feedback-field">
+
+                    <label for="name">
+                        Name <span>(Optional)</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your name">
+
+                </div>
+
+
+                <!-- QUESTION 1 -->
+
+                <div class="feedback-field">
+
+                    <label for="accuracy">
+                        1. How accurate did the recommended
+                        career feel for you?
+                    </label>
+
+                    <select
+                        id="accuracy"
+                        name="accuracy"
+                        required>
+
+                        <option value="">
+                            Select rating
+                        </option>
+
+                        <option value="5">
+                            5 - Very Accurate
+                        </option>
+
+                        <option value="4">
+                            4 - Accurate
+                        </option>
+
+                        <option value="3">
+                            3 - Neutral
+                        </option>
+
+                        <option value="2">
+                            2 - Not Very Accurate
+                        </option>
+
+                        <option value="1">
+                            1 - Not Accurate
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- QUESTION 2 -->
+
+                <div class="feedback-field">
+
+                    <label for="ease_of_use">
+                        2. How easy was the website to use?
+                    </label>
+
+                    <select
+                        id="ease_of_use"
+                        name="ease_of_use"
+                        required>
+
+                        <option value="">
+                            Select rating
+                        </option>
+
+                        <option value="5">
+                            5 - Very Easy
+                        </option>
+
+                        <option value="4">
+                            4 - Easy
+                        </option>
+
+                        <option value="3">
+                            3 - Neutral
+                        </option>
+
+                        <option value="2">
+                            2 - Difficult
+                        </option>
+
+                        <option value="1">
+                            1 - Very Difficult
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- QUESTION 3 -->
+
+                <div class="feedback-field">
+
+                    <label for="consider_career">
+                        3. Would you consider exploring this
+                        career based on the recommendation?
+                    </label>
+
+                    <select
+                        id="consider_career"
+                        name="consider_career"
+                        required>
+
+                        <option value="">
+                            Select an option
+                        </option>
+
+                        <option value="Yes">
+                            Yes
+                        </option>
+
+                        <option value="Maybe">
+                            Maybe
+                        </option>
+
+                        <option value="No">
+                            No
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- QUESTION 4 -->
+
+                <div class="feedback-field">
+
+                    <label for="message">
+                        4. Additional feedback
+                    </label>
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="6"
+                        placeholder="Tell us what you liked or what could be improved..."
+                        required></textarea>
+
+                </div>
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="assessment-button feedback-button">
+
+                    Submit Feedback
+
+                    <span>
+                        →
+                    </span>
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- BACK TO HOME -->
+
+        <div class="result-action">
+
+            <a href="/"
+               class="assessment-button result-button">
+
+                Back to Home
+
+                <span>
+                    →
+                </span>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-logo">
+        Career<span>Guide</span>
+    </div>
+
+    <p>
+        AI Career Guidance System
+    </p>
+
+    <p class="footer-copy">
+        Built with Python, Flask, Pandas & Machine Learning
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

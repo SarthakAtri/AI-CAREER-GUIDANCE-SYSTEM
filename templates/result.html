@@ -2,324 +2,759 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Career Recommendation</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+    <title>
+        Career Recommendation
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <style>
+
+        /* =====================================================
+           EXPLAINABILITY
+           ===================================================== */
+
+        .explainability {
+
+            margin-top: 40px;
+
+            padding: 30px;
+
+            background: #f8fafc;
+
+            border-radius: 16px;
+        }
+
+
+        .explainability h3 {
+
+            margin-bottom: 10px;
+        }
+
+
+        .explainability-description {
+
+            color: #666;
+
+            margin-bottom: 25px;
+
+            line-height: 1.6;
+        }
+
+
+        .feature-item {
+
+            margin-bottom: 20px;
+        }
+
+
+        .feature-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 8px;
+        }
+
+
+        .feature-name {
+
+            font-weight: 600;
+        }
+
+
+        .feature-percentage {
+
+            font-weight: 600;
+        }
+
+
+        .feature-bar {
+
+            width: 100%;
+
+            height: 10px;
+
+            background: #e5e7eb;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+
+        .feature-progress {
+
+            height: 100%;
+
+            background: #111827;
+
+            border-radius: 10px;
+        }
+
+
+        .explainability-note {
+
+            margin-top: 25px;
+
+            padding: 15px;
+
+            background: white;
+
+            border-radius: 10px;
+
+            color: #666;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           CAREER DETAILS
+           ===================================================== */
+
+        .career-details {
+
+            margin-top: 40px;
+
+            padding: 30px;
+
+            background: #ffffff;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 16px;
+        }
+
+
+        .career-details h3 {
+
+            margin-top: 8px;
+
+            margin-bottom: 12px;
+        }
+
+
+        .career-description {
+
+            color: #666;
+
+            line-height: 1.7;
+
+            margin-bottom: 30px;
+        }
+
+
+        .career-details-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(
+                        0,
+                        1fr
+                    )
+                );
+
+            gap: 30px;
+
+            margin-top: 25px;
+        }
+
+
+        .career-detail-box {
+
+            padding: 25px;
+
+            background: #f8fafc;
+
+            border-radius: 14px;
+        }
+
+
+        .career-detail-box h4 {
+
+            margin-bottom: 18px;
+
+            font-size: 18px;
+        }
+
+
+        .skill-list {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            padding: 0;
+
+            margin: 0;
+
+            list-style: none;
+        }
+
+
+        .skill-tag {
+
+            padding: 8px 13px;
+
+            background: white;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 20px;
+
+            font-size: 14px;
+
+            color: #333;
+        }
+
+
+        .roadmap-list {
+
+            margin: 0;
+
+            padding-left: 22px;
+
+            color: #555;
+
+            line-height: 1.8;
+        }
+
+
+        .roadmap-list li {
+
+            margin-bottom: 8px;
+        }
+
+
+        /* =====================================================
+           DISCLAIMER
+           ===================================================== */
+
+        .disclaimer {
+
+            margin-top: 30px;
+
+            padding: 18px 20px;
+
+            background: #f8fafc;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 12px;
+
+            color: #666;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+
+        .disclaimer strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #222;
+
+            font-size: 15px;
+        }
+
+
+        .disclaimer p {
+
+            margin: 0;
+        }
+
+
+        /* =====================================================
+           MOBILE RESPONSIVE
+           ===================================================== */
+
+        @media (max-width: 768px) {
+
+            .career-details-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .explainability,
+
+            .career-details {
+
+                padding: 22px;
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
 
-<!-- ================= NAVBAR ================= -->
+    <!-- =====================================================
+         NAVBAR
+         ===================================================== -->
 
-<nav class="navbar">
+    <nav class="navbar">
 
-    <div class="logo">
-        Career<span>Guide</span>
-    </div>
-
-    <div class="nav-links">
-
-        <a href="/">
-            Home
-        </a>
-
-        <a href="/#about">
-            About
-        </a>
-
-        <a href="/#assessment">
-            Assessment
-        </a>
-
-        <a href="/#how-it-works">
-            How It Works
-        </a>
-
-    </div>
-
-</nav>
+        <div class="logo">
+            Career<span>Guide</span>
+        </div>
 
 
-<!-- ================= RESULT HERO ================= -->
+        <div class="nav-links">
 
-<section class="result-hero">
+            <a href="/">
+                Home
+            </a>
 
-    <div class="result-hero-content">
+            <a href="/#about">
+                About
+            </a>
 
-        <p class="hero-small">
-            YOUR CAREER ASSESSMENT
-        </p>
+            <a href="/#assessment">
+                Assessment
+            </a>
 
-        <h1>
-            Your Career
-            <span>Recommendation</span>
-        </h1>
+            <a href="/#how-it-works">
+                How It Works
+            </a>
 
-        <p>
-            Based on the skills and interests you provided,
-            our machine learning model generated the following
-            career recommendations.
-        </p>
+            <a href="/feedback">
+                Feedback
+            </a>
 
-    </div>
+        </div>
 
-</section>
-
-
-<!-- ================= MAIN RESULT ================= -->
-
-<section class="result-section">
-
-    <div class="result-card">
+    </nav>
 
 
-        <!-- MAIN RECOMMENDATION -->
 
-        <div class="recommendation">
+    <!-- =====================================================
+         RESULT HERO
+         ===================================================== -->
 
-            <div class="recommendation-icon">
-                🎯
-            </div>
+    <section class="result-hero">
 
-            <p class="result-label">
-                RECOMMENDED CAREER
+        <div class="result-hero-content">
+
+            <p class="hero-small">
+                YOUR CAREER ASSESSMENT
             </p>
 
-            <h2>
-                {{ prediction }}
-            </h2>
 
-            <p class="recommendation-text">
-                This career received the highest prediction
-                from the Random Forest model based on your
-                assessment responses.
+            <h1>
+                Your Career
+                <span>Recommendation</span>
+            </h1>
+
+
+            <p>
+                Based on the skills and interests you provided,
+                our machine learning model generated the following
+                career recommendations.
             </p>
 
         </div>
 
+    </section>
 
-        <!-- TOP PREDICTIONS -->
 
-        <div class="predictions">
 
-            <div class="prediction-heading">
+    <!-- =====================================================
+         RESULT SECTION
+         ===================================================== -->
 
-                <div>
+    <section class="result-section">
 
-                    <p class="section-small">
-                        CAREER MATCHES
-                    </p>
+        <div class="result-card">
 
-                    <h3>
-                        Top Career Predictions
-                    </h3>
 
+            <!-- =================================================
+                 RECOMMENDED CAREER
+                 ================================================= -->
+
+            <div class="recommendation">
+
+                <div class="recommendation-icon">
+                    🎯
                 </div>
+
+
+                <p class="result-label">
+                    RECOMMENDED CAREER
+                </p>
+
+
+                <h2>
+                    {{ prediction }}
+                </h2>
+
+
+                <p class="recommendation-text">
+
+                    This career received the highest prediction
+                    from the Random Forest model based on your
+                    assessment responses.
+
+                </p>
 
             </div>
 
 
-            <p class="prediction-description">
-                The model's predicted probability for the
-                top career options is shown below.
-            </p>
+
+            <!-- =================================================
+                 TOP CAREER PREDICTIONS
+                 ================================================= -->
+
+            <div class="predictions">
+
+                <div class="prediction-heading">
+
+                    <div>
+
+                        <p class="section-small">
+                            CAREER MATCHES
+                        </p>
 
 
-            {% for career, probability in results %}
+                        <h3>
+                            Top Career Predictions
+                        </h3>
 
-            <div class="career-result">
-
-                <div class="career-info">
-
-                    <span class="career-title">
-                        {{ career }}
-                    </span>
-
-                    <strong>
-                        {{ "%.2f"|format(probability * 100) }}%
-                    </strong>
-
-                </div>
-
-
-                <div class="progress-bar">
-
-                    <div class="progress"
-                         style="width: {{ probability * 100 }}%;">
                     </div>
 
                 </div>
 
+
+                <p class="prediction-description">
+
+                    The model's predicted probability for the
+                    top career options is shown below.
+
+                </p>
+
+
+
+                {% for career, probability in results %}
+
+                <div class="career-result">
+
+                    <div class="career-info">
+
+                        <span class="career-title">
+                            {{ career }}
+                        </span>
+
+
+                        <strong>
+                            {{ "%.2f"|format(probability * 100) }}%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="progress-bar">
+
+                        <div
+                            class="progress"
+                            style="
+                                width:
+                                {{ probability * 100 }}%;
+                            "
+                        >
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
             </div>
 
-            {% endfor %}
-
-        </div>
 
 
-        <!-- ================= FEEDBACK ================= -->
+            <!-- =================================================
+                 MODEL EXPLAINABILITY
+                 ================================================= -->
 
-        <div class="feedback-section">
+            <div class="explainability">
 
-            <p class="section-small">
-                YOUR FEEDBACK
-            </p>
-
-            <h3>
-                How was your experience?
-            </h3>
-
-            <p class="feedback-description">
-                Your feedback helps us improve the CareerGuide
-                experience.
-            </p>
+                <p class="section-small">
+                    MODEL EXPLANATION
+                </p>
 
 
-            <form action="/feedback" method="POST"
-                  class="feedback-form">
+                <h3>
+                    Why was this career recommended?
+                </h3>
 
 
-                <!-- NAME -->
+                <p class="explainability-description">
 
-                <div class="feedback-field">
+                    The Random Forest model considers multiple
+                    skill features when generating a career
+                    recommendation. The following features had
+                    the highest importance in the trained model.
 
-                    <label for="name">
-                        Name <span>(Optional)</span>
-                    </label>
-
-                    <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        placeholder="Enter your name">
-                    
-                </div>
+                </p>
 
 
-                <!-- RATING -->
 
-                <div class="feedback-field">
+                {% for feature in top_features %}
 
-                    <label for="rating">
-                        Rating
-                    </label>
+                <div class="feature-item">
 
-                    <select
-                        id="rating"
-                        name="rating"
-                        required>
+                    <div class="feature-header">
 
-                        <option value="">
-                            Select rating
-                        </option>
+                        <span class="feature-name">
+                            {{ feature.skill }}
+                        </span>
 
-                        <option value="5">
-                            ⭐⭐⭐⭐⭐ Excellent
-                        </option>
 
-                        <option value="4">
-                            ⭐⭐⭐⭐ Good
-                        </option>
+                        <span class="feature-percentage">
+                            {{ feature.percentage }}%
+                        </span>
 
-                        <option value="3">
-                            ⭐⭐⭐ Average
-                        </option>
+                    </div>
 
-                        <option value="2">
-                            ⭐⭐ Poor
-                        </option>
 
-                        <option value="1">
-                            ⭐ Very Poor
-                        </option>
+                    <div class="feature-bar">
 
-                    </select>
+                        <div
+                            class="feature-progress"
+                            style="
+                                width:
+                                {{ feature.percentage }}%;
+                            "
+                        >
+                        </div>
+
+                    </div>
 
                 </div>
 
+                {% endfor %}
 
-                <!-- FEEDBACK -->
 
-                <div class="feedback-field">
 
-                    <label for="message">
-                        Your Feedback
-                    </label>
+                <div class="explainability-note">
 
-                    <textarea
-                        id="message"
-                        name="message"
-                        rows="5"
-                        placeholder="Tell us what you think..."
-                        required></textarea>
+                    <strong>
+                        Note:
+                    </strong>
+
+                    These percentages represent feature
+                    importance in the trained Random Forest
+                    model. They show which features were important
+                    to the model overall and should not be
+                    interpreted as individual causal effects on
+                    a student's career recommendation.
 
                 </div>
 
+            </div>
 
-                <!-- SUBMIT -->
 
-                <button
-                    type="submit"
-                    class="assessment-button feedback-button">
 
-                    Submit Feedback
+            <!-- =================================================
+                 CAREER DETAILS
+                 ================================================= -->
+
+            <div class="career-details">
+
+                <p class="section-small">
+                    CAREER INFORMATION
+                </p>
+
+
+                <h3>
+                    About {{ prediction }}
+                </h3>
+
+
+                <p class="career-description">
+
+                    {{ career_details.description }}
+
+                </p>
+
+
+
+                <div class="career-details-grid">
+
+
+                    <!-- =========================================
+                         KEY SKILLS
+                         ========================================= -->
+
+                    <div class="career-detail-box">
+
+                        <h4>
+                            Key Skills
+                        </h4>
+
+
+                        <ul class="skill-list">
+
+                            {% for skill in career_details.skills %}
+
+                            <li class="skill-tag">
+
+                                {{ skill }}
+
+                            </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         CAREER ROADMAP
+                         ========================================= -->
+
+                    <div class="career-detail-box">
+
+                        <h4>
+                            Career Roadmap
+                        </h4>
+
+
+                        <ol class="roadmap-list">
+
+                            {% for step in career_details.roadmap %}
+
+                            <li>
+
+                                {{ step }}
+
+                            </li>
+
+                            {% endfor %}
+
+                        </ol>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 DISCLAIMER
+                 ================================================= -->
+
+            <div class="disclaimer">
+
+                <strong>
+                    Disclaimer
+                </strong>
+
+
+                <p>
+
+                    This career recommendation is generated
+                    using a machine learning model trained on
+                    synthetic data. It is intended for educational
+                    and career guidance purposes only and should
+                    not be considered a final career decision.
+
+                </p>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ACTION BUTTON
+                 ================================================= -->
+
+            <div class="result-action">
+
+                <a
+                    href="/"
+                    class="assessment-button result-button"
+                >
+
+                    Take Assessment Again
 
                     <span>
                         →
                     </span>
 
-                </button>
+                </a>
 
-            </form>
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer>
+
+        <div class="footer-logo">
+
+            Career<span>Guide</span>
 
         </div>
 
 
-        <!-- ACTION -->
-
-        <div class="result-action">
-
-            <a href="/"
-               class="assessment-button result-button">
-
-                Take Assessment Again
-
-                <span>
-                    →
-                </span>
-
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
+        <p>
+            AI Career Guidance System
+        </p>
 
 
-<!-- ================= FOOTER ================= -->
+        <p class="footer-copy">
 
-<footer>
+            Built with Python, Flask, Pandas &
+            Machine Learning
 
-    <div class="footer-logo">
-        Career<span>Guide</span>
-    </div>
+        </p>
 
-    <p>
-        AI Career Guidance System
-    </p>
-
-    <p class="footer-copy">
-        Built with Python, Flask, Pandas & Machine Learning
-    </p>
-
-</footer>
+    </footer>
 
 
 </body>
+
 </html>
