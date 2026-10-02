@@ -5,15 +5,26 @@ import joblib
 import pandas as pd
 from flask import Flask, render_template, request
 
+from dotenv import load_dotenv
+from supabase import create_client
+
+
+# =========================================================
+# APP SETUP
+# =========================================================
 
 app = Flask(__name__)
+
+load_dotenv()
 
 
 # =========================================================
 # PATHS
 # =========================================================
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(
+    os.path.abspath(__file__)
+)
 
 MODEL_PATH = os.path.join(
     BASE_DIR,
@@ -27,10 +38,34 @@ DB_PATH = os.path.join(
 
 
 # =========================================================
-# LOAD TRAINED MACHINE LEARNING MODEL
+# SUPABASE
 # =========================================================
 
-model = joblib.load(MODEL_PATH)
+SUPABASE_URL = os.getenv(
+    "SUPABASE_URL"
+)
+
+SUPABASE_KEY = os.getenv(
+    "SUPABASE_KEY"
+)
+
+supabase = None
+
+if SUPABASE_URL and SUPABASE_KEY:
+
+    supabase = create_client(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    )
+
+
+# =========================================================
+# LOAD MODEL
+# =========================================================
+
+model = joblib.load(
+    MODEL_PATH
+)
 
 
 # =========================================================
@@ -38,16 +73,27 @@ model = joblib.load(MODEL_PATH)
 # =========================================================
 
 SKILL_FIELDS = [
+
     "programming",
+
     "analytical_reasoning",
+
     "hardware",
+
     "mathematics",
+
     "communication",
+
     "data_structures",
+
     "operating_systems",
+
     "networking",
+
     "digital_electronics",
+
     "machine_learning",
+
 ]
 
 
@@ -86,6 +132,7 @@ SKILL_DISPLAY_NAMES = {
 
     "machine_learning":
         "Machine Learning",
+
 }
 
 
@@ -453,46 +500,54 @@ CAREER_DETAILS = {
 
 def init_db():
 
-    with sqlite3.connect(DB_PATH) as conn:
+    try:
 
-        conn.execute(
-            """
-            CREATE TABLE IF NOT EXISTS assessments (
+        with sqlite3.connect(DB_PATH) as conn:
 
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+            conn.execute(
+                """
+                CREATE TABLE IF NOT EXISTS assessments (
 
-                branch TEXT,
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-                programming INTEGER,
+                    branch TEXT,
 
-                analytical_reasoning INTEGER,
+                    programming INTEGER,
 
-                hardware INTEGER,
+                    analytical_reasoning INTEGER,
 
-                mathematics INTEGER,
+                    hardware INTEGER,
 
-                communication INTEGER,
+                    mathematics INTEGER,
 
-                data_structures INTEGER,
+                    communication INTEGER,
 
-                operating_systems INTEGER,
+                    data_structures INTEGER,
 
-                networking INTEGER,
+                    operating_systems INTEGER,
 
-                digital_electronics INTEGER,
+                    networking INTEGER,
 
-                machine_learning INTEGER,
+                    digital_electronics INTEGER,
 
-                predicted_career TEXT,
+                    machine_learning INTEGER,
 
-                created_at TIMESTAMP
-                    DEFAULT CURRENT_TIMESTAMP
+                    predicted_career TEXT,
+
+                    created_at TIMESTAMP
+                        DEFAULT CURRENT_TIMESTAMP
+                )
+                """
             )
-            """
+
+    except Exception as e:
+
+        print(
+            "DATABASE INITIALIZATION ERROR:",
+            e
         )
 
 
-# Initialize database
 init_db()
 
 
@@ -518,241 +573,368 @@ def home():
 )
 def predict():
 
-    # -----------------------------------------
-    # Read and validate input
-    # -----------------------------------------
-
     try:
 
-        branch = request.form["branch"]
+        # -------------------------------------------------
+        # GET BRANCH
+        # -------------------------------------------------
 
-        skills = {
-
-            field: int(
-                request.form[field]
-            )
-
-            for field in SKILL_FIELDS
-        }
-
-    except (
-        KeyError,
-        ValueError
-    ):
-
-        return (
-            "Please fill in all fields correctly.",
-            400
-        )
-
-
-    # -----------------------------------------
-    # Validate rating range
-    # -----------------------------------------
-
-    if any(
-        value < 0 or value > 4
-        for value in skills.values()
-    ):
-
-        return (
-            "Ratings must be between 0 and 4.",
-            400
-        )
-
-
-    # -----------------------------------------
-    # Create student dataframe
-    # -----------------------------------------
-
-    student = pd.DataFrame([
-
-        {
-            "branch": branch,
-            **skills
-        }
-
-    ])
-
-
-    # -----------------------------------------
-    # Predict career
-    # -----------------------------------------
-
-    prediction = model.predict(
-        student
-    )[0]
-
-
-    # -----------------------------------------
-    # Prediction probabilities
-    # -----------------------------------------
-
-    probabilities = model.predict_proba(
-        student
-    )[0]
-
-
-    # -----------------------------------------
-    # Sort predictions
-    # -----------------------------------------
-
-    results = sorted(
-
-        zip(
-            model.classes_,
-            probabilities
-        ),
-
-        key=lambda x: x[1],
-
-        reverse=True
-    )
-
-
-    # -----------------------------------------
-    # Top 5 predictions
-    # -----------------------------------------
-
-    top_results = results[:5]
-
-
-    # =====================================================
-    # EXPLAINABILITY
-    # =====================================================
-
-    rf_model = model.named_steps["model"]
-
-    preprocessor = model.named_steps[
-        "preprocessor"
-    ]
-
-    transformed_features = (
-        preprocessor.get_feature_names_out()
-    )
-
-    importances = (
-        rf_model.feature_importances_
-    )
-
-    feature_importance_data = []
-
-
-    for feature_name, importance in zip(
-        transformed_features,
-        importances
-    ):
-
-        # Ignore branch encoded features
-        if feature_name.startswith(
-            "branch_"
-        ):
-
-            continue
-
-
-        # Remove pipeline prefix
-        clean_name = feature_name.replace(
-            "remainder__",
+        branch = request.form.get(
+            "branch",
             ""
-        )
+        ).strip()
 
 
-        # Convert to readable name
-        display_name = (
-            SKILL_DISPLAY_NAMES.get(
-                clean_name,
-                clean_name.replace(
-                    "_",
-                    " "
-                ).title()
+        if not branch:
+
+            return (
+                "Please select your branch.",
+                400
             )
+
+
+        # -------------------------------------------------
+        # GET SKILLS
+        # -------------------------------------------------
+
+        skills = {}
+
+        for field in SKILL_FIELDS:
+
+            value = request.form.get(
+                field,
+                ""
+            )
+
+            try:
+
+                value = int(value)
+
+            except ValueError:
+
+                return (
+                    "Please enter valid skill ratings.",
+                    400
+                )
+
+
+            if value < 0 or value > 4:
+
+                return (
+                    "Skill ratings must be between 0 and 4.",
+                    400
+                )
+
+
+            skills[field] = value
+
+
+        # -------------------------------------------------
+        # CREATE INPUT DATAFRAME
+        # -------------------------------------------------
+
+        student = pd.DataFrame([
+            {
+                "branch": branch,
+                **skills
+            }
+        ])
+
+
+        # -------------------------------------------------
+        # PREDICTION
+        # -------------------------------------------------
+
+        prediction = model.predict(
+            student
+        )[0]
+
+
+        # -------------------------------------------------
+        # PREDICTION PROBABILITIES
+        # -------------------------------------------------
+
+        probabilities = model.predict_proba(
+            student
+        )[0]
+
+
+        # -------------------------------------------------
+        # SORT PREDICTIONS
+        # -------------------------------------------------
+
+        results = sorted(
+
+            zip(
+                model.classes_,
+                probabilities
+            ),
+
+            key=lambda x: x[1],
+
+            reverse=True
         )
 
 
-        feature_importance_data.append(
+        # -------------------------------------------------
+        # TOP 5
+        # -------------------------------------------------
+
+        top_results = results[:5]
+
+
+        # =================================================
+        # MODEL EXPLAINABILITY
+        # =================================================
+
+        top_features = []
+
+
+        try:
+
+            rf_model = model.named_steps[
+                "model"
+            ]
+
+            preprocessor = model.named_steps[
+                "preprocessor"
+            ]
+
+
+            transformed_features = (
+                preprocessor
+                .get_feature_names_out()
+            )
+
+
+            importances = (
+                rf_model
+                .feature_importances_
+            )
+
+
+            feature_importance_data = []
+
+
+            for feature_name, importance in zip(
+                transformed_features,
+                importances
+            ):
+
+                # Ignore branch encoded features
+                if feature_name.startswith(
+                    "branch_"
+                ):
+
+                    continue
+
+
+                clean_name = feature_name.replace(
+                    "remainder__",
+                    ""
+                )
+
+
+                display_name = (
+                    SKILL_DISPLAY_NAMES.get(
+                        clean_name,
+                        clean_name.replace(
+                            "_",
+                            " "
+                        ).title()
+                    )
+                )
+
+
+                feature_importance_data.append(
+                    {
+                        "skill":
+                            display_name,
+
+                        "importance":
+                            float(importance)
+                    }
+                )
+
+
+            feature_importance_data.sort(
+                key=lambda x:
+                    x["importance"],
+
+                reverse=True
+            )
+
+
+            top_features = (
+                feature_importance_data[:5]
+            )
+
+
+            for feature in top_features:
+
+                feature["percentage"] = round(
+                    feature["importance"] * 100,
+                    2
+                )
+
+
+        except Exception as e:
+
+            print(
+                "EXPLAINABILITY ERROR:",
+                e
+            )
+
+
+        # =================================================
+        # SKILL GAP ANALYSIS
+        # =================================================
+
+        skill_gap = []
+
+
+        career_details = CAREER_DETAILS.get(
+
+            prediction,
 
             {
-                "skill": display_name,
+                "description":
+                    "Career information is not available for this prediction.",
 
-                "importance":
-                    float(importance)
+                "skills": [],
+
+                "roadmap": []
             }
         )
 
 
-    # -----------------------------------------
-    # Sort feature importance
-    # -----------------------------------------
-
-    feature_importance_data.sort(
-
-        key=lambda x:
-            x["importance"],
-
-        reverse=True
-    )
-
-
-    # -----------------------------------------
-    # Top 5 features
-    # -----------------------------------------
-
-    top_features = (
-        feature_importance_data[:5]
-    )
-
-
-    # -----------------------------------------
-    # Convert to percentage
-    # -----------------------------------------
-
-    for feature in top_features:
-
-        feature["percentage"] = round(
-
-            feature["importance"] * 100,
-
-            2
+        required_skills = (
+            career_details.get(
+                "skills",
+                []
+            )
         )
 
 
-    # =====================================================
-    # CAREER DETAILS
-    # =====================================================
+        skill_mapping = {
 
-    career_details = CAREER_DETAILS.get(
+            "Programming":
+                "programming",
 
-        prediction,
+            "Analytical Reasoning":
+                "analytical_reasoning",
 
-        {
+            "Hardware":
+                "hardware",
 
-            "description":
-                "Career information is not available for this prediction.",
+            "Mathematics":
+                "mathematics",
 
-            "skills": [],
+            "Communication":
+                "communication",
 
-            "roadmap": []
+            "Data Structures":
+                "data_structures",
+
+            "Operating Systems":
+                "operating_systems",
+
+            "Networking":
+                "networking",
+
+            "Digital Electronics":
+                "digital_electronics",
+
+            "Machine Learning":
+                "machine_learning"
+
         }
-    )
 
 
-    # =====================================================
-    # RESULT PAGE
-    # =====================================================
+        for skill_name in required_skills:
 
-    return render_template(
+            field = skill_mapping.get(
+                skill_name
+            )
 
-        "result.html",
 
-        prediction=prediction,
+            current_value = 0
 
-        results=top_results,
 
-        top_features=top_features,
+            if field:
 
-        career_details=career_details
-    )
+                current_value = skills.get(
+                    field,
+                    0
+                )
+
+
+            if current_value >= 3:
+
+                status = "Strong"
+
+            elif current_value >= 2:
+
+                status = "Developing"
+
+            else:
+
+                status = "Needs Improvement"
+
+
+            skill_gap.append(
+
+                {
+                    "skill":
+                        skill_name,
+
+                    "level":
+                        current_value,
+
+                    "status":
+                        status
+                }
+
+            )
+
+
+        # =================================================
+        # RESULT PAGE
+        # =================================================
+
+        return render_template(
+
+            "result.html",
+
+            prediction=prediction,
+
+            results=top_results,
+
+            top_features=top_features,
+
+            career_details=career_details,
+
+            skill_gap=skill_gap
+
+        )
+
+
+    except Exception as e:
+
+        print(
+            "PREDICTION ERROR:",
+            e
+        )
+
+        return (
+
+            "Something went wrong while generating "
+            "your career recommendation. "
+            "Please try again.",
+
+            500
+
+        )
 
 
 # =========================================================
@@ -765,9 +947,9 @@ def predict():
 )
 def feedback():
 
-    # -----------------------------------------
-    # Show feedback page
-    # -----------------------------------------
+    # -----------------------------------------------------
+    # SHOW FEEDBACK PAGE
+    # -----------------------------------------------------
 
     if request.method == "GET":
 
@@ -776,9 +958,9 @@ def feedback():
         )
 
 
-    # -----------------------------------------
-    # Receive feedback
-    # -----------------------------------------
+    # -----------------------------------------------------
+    # RECEIVE FEEDBACK
+    # -----------------------------------------------------
 
     name = request.form.get(
         "name",
@@ -810,167 +992,189 @@ def feedback():
     ).strip()
 
 
-    # -----------------------------------------
-    # Validate feedback
-    # -----------------------------------------
+    # -----------------------------------------------------
+    # VALIDATION
+    # -----------------------------------------------------
 
-    if (
-
-        not accuracy
-
-        or not ease_of_use
-
-        or not consider_career
-
-        or not message
-
-    ):
+    if not accuracy:
 
         return (
-            "Please complete all required feedback fields.",
+            "Please provide an accuracy rating.",
             400
         )
 
 
-    # -----------------------------------------
-    # Thank you page
-    # -----------------------------------------
+    if not ease_of_use:
 
-    return """
-
-    <!DOCTYPE html>
-
-    <html lang="en">
-
-    <head>
-
-        <meta charset="UTF-8">
-
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
-        >
-
-        <title>
-            Thank You | CareerGuide
-        </title>
+        return (
+            "Please provide an ease-of-use rating.",
+            400
+        )
 
 
-        <style>
+    if not consider_career:
 
-            body {
+        return (
+            "Please select an option.",
+            400
+        )
 
-                font-family:
-                    Arial,
-                    sans-serif;
 
-                text-align: center;
+    if not message:
 
-                padding: 80px 20px;
+        return (
+            "Please enter your feedback.",
+            400
+        )
 
-                background:
-                    #f8fafc;
+
+    try:
+
+        accuracy_value = int(
+            accuracy
+        )
+
+        ease_value = int(
+            ease_of_use
+        )
+
+    except ValueError:
+
+        return (
+            "Invalid rating values.",
+            400
+        )
+
+
+    if accuracy_value < 1 or accuracy_value > 5:
+
+        return (
+            "Accuracy rating must be between 1 and 5.",
+            400
+        )
+
+
+    if ease_value < 1 or ease_value > 5:
+
+        return (
+            "Ease-of-use rating must be between 1 and 5.",
+            400
+        )
+
+
+    # -----------------------------------------------------
+    # SUPABASE
+    # -----------------------------------------------------
+
+    if supabase is None:
+
+        print(
+            "SUPABASE ERROR: "
+            "SUPABASE_URL or SUPABASE_KEY is missing."
+        )
+
+        return (
+            "Feedback storage is not configured "
+            "right now. Please try again later.",
+            500
+        )
+
+
+    try:
+
+        print(
+            "SUPABASE FEEDBACK INSERT"
+        )
+
+
+        supabase.rpc(
+
+            "submit_feedback",
+
+            {
+
+                "p_name":
+                    name if name else None,
+
+                "p_accuracy":
+                    accuracy_value,
+
+                "p_ease_of_use":
+                    ease_value,
+
+                "p_consider_career":
+                    consider_career,
+
+                "p_message":
+                    message
+
             }
 
-
-            .thank-you {
-
-                max-width: 600px;
-
-                margin: auto;
-
-                background: white;
-
-                padding: 50px 30px;
-
-                border-radius: 16px;
-
-                box-shadow:
-                    0 10px 30px
-                    rgba(
-                        0,
-                        0,
-                        0,
-                        0.08
-                    );
-            }
+        ).execute()
 
 
-            h1 {
-
-                margin-bottom: 15px;
-
-                font-size: 32px;
-            }
+        print(
+            "SUPABASE FEEDBACK SAVED"
+        )
 
 
-            p {
+    except Exception as e:
 
-                margin-bottom: 30px;
+        print(
+            "SUPABASE FEEDBACK ERROR"
+        )
 
-                color: #555;
+        print(
+            "ERROR TYPE:",
+            type(e).__name__
+        )
 
-                font-size: 17px;
-            }
-
-
-            a {
-
-                display: inline-block;
-
-                text-decoration: none;
-
-                padding: 12px 24px;
-
-                border-radius: 8px;
-
-                background: #111;
-
-                color: white;
-            }
+        print(
+            "ERROR:",
+            e
+        )
 
 
-            a:hover {
+        return (
 
-                opacity: 0.9;
-            }
+            "We could not save your feedback right now. "
+            "Please try again later.",
 
-        </style>
+            500
 
-    </head>
-
-
-    <body>
+        )
 
 
-        <div class="thank-you">
+    # -----------------------------------------------------
+    # SUCCESS
+    # -----------------------------------------------------
 
-            <h1>
-                Thank You! 🎉
-            </h1>
-
-
-            <p>
-                Your feedback has been received.
-            </p>
-
-
-            <a href="/">
-                Back to CareerGuide
-            </a>
-
-        </div>
-
-
-    </body>
-
-    </html>
-
-    """
+    return render_template(
+        "feedback.html",
+        success=True
+    )
 
 
 # =========================================================
-# RUN APPLICATION
+# HEALTH CHECK
+# =========================================================
+
+@app.route("/health")
+def health():
+
+    return {
+
+        "status":
+            "ok",
+
+        "application":
+            "AI Career Guidance System"
+
+    }
+
+
+# =========================================================
+# RUN APP
 # =========================================================
 
 if __name__ == "__main__":
@@ -990,4 +1194,5 @@ if __name__ == "__main__":
         port=port,
 
         debug=False
+
     )
