@@ -21,7 +21,6 @@
             line-height: 1.6;
         }
 
-        /* Navbar */
         nav {
             background: #ffffff;
             padding: 18px 7%;
@@ -52,7 +51,6 @@
             color: #2563eb;
         }
 
-        /* Main */
         .container {
             width: 90%;
             max-width: 1150px;
@@ -75,7 +73,6 @@
             font-size: 17px;
         }
 
-        /* Recommendation */
         .recommendation {
             background: linear-gradient(135deg, #2563eb, #4f46e5);
             color: white;
@@ -102,7 +99,6 @@
             opacity: 0.9;
         }
 
-        /* Cards */
         .section {
             background: white;
             padding: 30px;
@@ -123,7 +119,6 @@
             margin-bottom: 10px;
         }
 
-        /* Top predictions */
         .prediction-list {
             display: grid;
             gap: 15px;
@@ -149,7 +144,6 @@
             color: #2563eb;
         }
 
-        /* Feature importance */
         .feature-list {
             display: grid;
             gap: 12px;
@@ -174,7 +168,6 @@
             font-weight: 700;
         }
 
-        /* Skill gap */
         .skill-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -210,7 +203,6 @@
             border-left: 5px solid #dc2626;
         }
 
-        /* Career details */
         .career-description {
             color: #4b5563;
             margin-bottom: 20px;
@@ -244,7 +236,6 @@
             border-radius: 5px;
         }
 
-        /* Disclaimer */
         .disclaimer {
             background: #fff7ed;
             border: 1px solid #fed7aa;
@@ -255,7 +246,6 @@
             font-size: 14px;
         }
 
-        /* Buttons */
         .actions {
             display: flex;
             justify-content: center;
@@ -292,7 +282,6 @@
             background: #eff6ff;
         }
 
-        /* Footer */
         footer {
             background: #111827;
             color: white;
@@ -310,8 +299,8 @@
             color: #60a5fa;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
+
             nav {
                 padding: 16px 5%;
             }
@@ -347,8 +336,8 @@
 
 <body>
 
-    <!-- Navbar -->
     <nav>
+
         <div class="logo">
             Career<span>Guide</span>
         </div>
@@ -357,21 +346,27 @@
             <a href="/">Home</a>
             <a href="/feedback">Feedback</a>
         </div>
+
     </nav>
 
 
-    <!-- Main Content -->
     <div class="container">
 
-        <!-- Hero -->
         <div class="hero">
+
             <h1>Your Career Recommendation</h1>
-            <p>Based on the skills and information you provided</p>
+
+            <p>
+                Based on the skills and information you provided
+            </p>
+
         </div>
 
 
         <!-- Recommended Career -->
+
         <div class="recommendation">
+
             <h2>Recommended Career</h2>
 
             <h1>
@@ -381,10 +376,12 @@
             <p>
                 This recommendation is generated using the trained machine learning model.
             </p>
+
         </div>
 
 
         <!-- Top Career Predictions -->
+
         <div class="section">
 
             <h2>Top Career Predictions</h2>
@@ -413,6 +410,7 @@
 
 
         <!-- Model Explainability -->
+
         <div class="section">
 
             <h2>Why This Recommendation?</h2>
@@ -425,16 +423,16 @@
 
             <div class="feature-list">
 
-                {% for feature, importance in top_features %}
+                {% for feature in top_features %}
 
                 <div class="feature-item">
 
                     <div class="feature-name">
-                        {{ feature.replace("_", " ").title() }}
+                        {{ feature.skill }}
                     </div>
 
                     <div class="feature-value">
-                        {{ "%.2f"|format(importance) }}%
+                        {{ "%.2f"|format(feature.percentage) }}%
                     </div>
 
                 </div>
@@ -447,6 +445,7 @@
 
 
         <!-- Skill Gap Analysis -->
+
         <div class="section">
 
             <h2>Skill Gap Analysis</h2>
@@ -459,12 +458,12 @@
 
             <div class="skill-grid">
 
-                {% for skill, data in skill_gap.items() %}
+                {% for item in skill_gap %}
 
                 <div class="skill-card
-                    {% if data.status == 'Strong' %}
+                    {% if item.status == 'Strong' %}
                         strong
-                    {% elif data.status == 'Developing' %}
+                    {% elif item.status == 'Developing' %}
                         developing
                     {% else %}
                         needs-improvement
@@ -472,19 +471,15 @@
                 ">
 
                     <h3>
-                        {{ skill.replace("_", " ").title() }}
+                        {{ item.skill }}
                     </h3>
 
                     <p>
-                        Your Level: {{ data.user_level }}
+                        Your Level: {{ item.level }}
                     </p>
 
                     <p>
-                        Required Level: {{ data.required_level }}
-                    </p>
-
-                    <p>
-                        Status: <strong>{{ data.status }}</strong>
+                        Status: <strong>{{ item.status }}</strong>
                     </p>
 
                 </div>
@@ -497,6 +492,7 @@
 
 
         <!-- Career Information -->
+
         <div class="section">
 
             <h2>Career Information</h2>
@@ -508,7 +504,6 @@
                 </p>
 
 
-                <!-- Key Skills -->
                 <h3>Key Skills</h3>
 
                 <div class="skills-list">
@@ -524,7 +519,6 @@
                 </div>
 
 
-                <!-- Roadmap -->
                 <h3>Career Roadmap</h3>
 
                 <div class="roadmap">
@@ -551,6 +545,7 @@
 
 
         <!-- Disclaimer -->
+
         <div class="disclaimer">
 
             <strong>Note:</strong>
@@ -562,7 +557,8 @@
         </div>
 
 
-        <!-- Actions -->
+        <!-- Buttons -->
+
         <div class="actions">
 
             <a href="/" class="btn btn-primary">
@@ -579,6 +575,7 @@
 
 
     <!-- Footer -->
+
     <footer>
 
         <div class="footer-logo">
