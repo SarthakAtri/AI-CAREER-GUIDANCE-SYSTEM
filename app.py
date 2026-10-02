@@ -650,6 +650,70 @@ def predict():
         )[0]
 
 
+        # =================================================
+        # SAVE ASSESSMENT TO SUPABASE
+        # =================================================
+
+        if supabase is not None:
+
+            try:
+
+                supabase.table(
+                    "assessments"
+                ).insert({
+
+                    "branch":
+                        branch,
+
+                    "programming":
+                        skills["programming"],
+
+                    "analytical_reasoning":
+                        skills["analytical_reasoning"],
+
+                    "hardware":
+                        skills["hardware"],
+
+                    "mathematics":
+                        skills["mathematics"],
+
+                    "communication":
+                        skills["communication"],
+
+                    "data_structures":
+                        skills["data_structures"],
+
+                    "operating_systems":
+                        skills["operating_systems"],
+
+                    "networking":
+                        skills["networking"],
+
+                    "digital_electronics":
+                        skills["digital_electronics"],
+
+                    "machine_learning":
+                        skills["machine_learning"],
+
+                    "predicted_career":
+                        prediction
+
+                }).execute()
+
+
+                print(
+                    "SUPABASE ASSESSMENT SAVED"
+                )
+
+
+            except Exception as e:
+
+                print(
+                    "SUPABASE ASSESSMENT ERROR:",
+                    e
+                )
+
+
         # -------------------------------------------------
         # PREDICTION PROBABILITIES
         # -------------------------------------------------
