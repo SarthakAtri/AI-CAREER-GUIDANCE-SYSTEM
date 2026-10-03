@@ -69,7 +69,8 @@ preprocessor = ColumnTransformer(
 # -----------------------------------------
 
 model = RandomForestClassifier(
-    n_estimators=200,
+    n_estimators=1000,
+    min_samples_leaf=2,
     random_state=42
 )
 
@@ -140,7 +141,13 @@ print(f"Accuracy percentage: {accuracy * 100:.2f}%")
 # -----------------------------------------
 
 print("\nClassification Report:")
-print(classification_report(y_test, y_pred))
+
+print(
+    classification_report(
+        y_test,
+        y_pred
+    )
+)
 
 
 # -----------------------------------------
@@ -156,6 +163,11 @@ cm = confusion_matrix(
 )
 
 print(cm)
+
+
+# -----------------------------------------
+# 13. Save trained model
+# -----------------------------------------
 
 joblib.dump(
     pipeline,

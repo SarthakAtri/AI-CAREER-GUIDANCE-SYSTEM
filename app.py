@@ -1,5 +1,4 @@
 import os
-import sqlite3
 
 import joblib
 import pandas as pd
@@ -31,22 +30,17 @@ MODEL_PATH = os.path.join(
     "career_model.pkl"
 )
 
-DB_PATH = os.path.join(
-    BASE_DIR,
-    "career_guidance.db"
-)
-
-
 # =========================================================
 # SUPABASE
 # =========================================================
 
-SUPABASE_URL = os.getenv(
-    "SUPABASE_URL"
-)
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
-SUPABASE_KEY = os.getenv(
-    "SUPABASE_KEY"
+print("SUPABASE URL:", SUPABASE_URL)
+print(
+    "SUPABASE KEY PREFIX:",
+    SUPABASE_KEY[:20] if SUPABASE_KEY else "NONE"
 )
 
 supabase = None
@@ -56,6 +50,14 @@ if SUPABASE_URL and SUPABASE_KEY:
     supabase = create_client(
         SUPABASE_URL,
         SUPABASE_KEY
+    )
+
+    print("SUPABASE CLIENT: CONNECTED")
+
+else:
+
+    print(
+        "SUPABASE CLIENT: NOT CONNECTED"
     )
 
 
@@ -75,24 +77,15 @@ model = joblib.load(
 SKILL_FIELDS = [
 
     "programming",
-
     "analytical_reasoning",
-
     "hardware",
-
     "mathematics",
-
     "communication",
-
     "data_structures",
-
     "operating_systems",
-
     "networking",
-
     "digital_electronics",
-
-    "machine_learning",
+    "machine_learning"
 
 ]
 
@@ -131,7 +124,7 @@ SKILL_DISPLAY_NAMES = {
         "Digital Electronics",
 
     "machine_learning":
-        "Machine Learning",
+        "Machine Learning"
 
 }
 
@@ -161,6 +154,7 @@ CAREER_DETAILS = {
             "Build AI and machine learning projects",
             "Develop practical experience through internships or projects"
         ]
+
     },
 
 
@@ -183,6 +177,7 @@ CAREER_DETAILS = {
             "Build API-based projects",
             "Practice API integration"
         ]
+
     },
 
 
@@ -205,6 +200,7 @@ CAREER_DETAILS = {
             "Learn application support processes",
             "Gain practical support experience"
         ]
+
     },
 
 
@@ -227,6 +223,7 @@ CAREER_DETAILS = {
             "Understand business requirements",
             "Practice with real business case studies"
         ]
+
     },
 
 
@@ -248,6 +245,7 @@ CAREER_DETAILS = {
             "Practice handling customer queries",
             "Gain customer service experience"
         ]
+
     },
 
 
@@ -270,6 +268,7 @@ CAREER_DETAILS = {
             "Practice security tools and labs",
             "Develop practical cybersecurity projects"
         ]
+
     },
 
 
@@ -292,6 +291,7 @@ CAREER_DETAILS = {
             "Learn database administration concepts",
             "Practice with database projects"
         ]
+
     },
 
 
@@ -313,6 +313,7 @@ CAREER_DETAILS = {
             "Build a design portfolio",
             "Work on practical design projects"
         ]
+
     },
 
 
@@ -335,6 +336,7 @@ CAREER_DETAILS = {
             "Practice circuit and hardware projects",
             "Gain practical hardware experience"
         ]
+
     },
 
 
@@ -357,6 +359,7 @@ CAREER_DETAILS = {
             "Develop troubleshooting skills",
             "Practice technical support scenarios"
         ]
+
     },
 
 
@@ -379,6 +382,7 @@ CAREER_DETAILS = {
             "Practice security labs",
             "Develop practical security skills"
         ]
+
     },
 
 
@@ -401,6 +405,7 @@ CAREER_DETAILS = {
             "Learn network troubleshooting",
             "Build practical networking experience"
         ]
+
     },
 
 
@@ -423,6 +428,7 @@ CAREER_DETAILS = {
             "Practice team and task management",
             "Gain experience working on projects"
         ]
+
     },
 
 
@@ -445,6 +451,7 @@ CAREER_DETAILS = {
             "Build practical projects",
             "Gain internship or development experience"
         ]
+
     },
 
 
@@ -467,6 +474,7 @@ CAREER_DETAILS = {
             "Practice manual and automated testing",
             "Build practical testing experience"
         ]
+
     },
 
 
@@ -489,66 +497,10 @@ CAREER_DETAILS = {
             "Practice writing technical documentation",
             "Build a technical writing portfolio"
         ]
+
     }
 
 }
-
-
-# =========================================================
-# DATABASE INITIALIZATION
-# =========================================================
-
-def init_db():
-
-    try:
-
-        with sqlite3.connect(DB_PATH) as conn:
-
-            conn.execute(
-                """
-                CREATE TABLE IF NOT EXISTS assessments (
-
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-                    branch TEXT,
-
-                    programming INTEGER,
-
-                    analytical_reasoning INTEGER,
-
-                    hardware INTEGER,
-
-                    mathematics INTEGER,
-
-                    communication INTEGER,
-
-                    data_structures INTEGER,
-
-                    operating_systems INTEGER,
-
-                    networking INTEGER,
-
-                    digital_electronics INTEGER,
-
-                    machine_learning INTEGER,
-
-                    predicted_career TEXT,
-
-                    created_at TIMESTAMP
-                        DEFAULT CURRENT_TIMESTAMP
-                )
-                """
-            )
-
-    except Exception as e:
-
-        print(
-            "DATABASE INITIALIZATION ERROR:",
-            e
-        )
-
-
-init_db()
 
 
 # =========================================================
@@ -575,15 +527,10 @@ def predict():
 
     try:
 
-        # -------------------------------------------------
-        # GET BRANCH
-        # -------------------------------------------------
-
         branch = request.form.get(
             "branch",
             ""
         ).strip()
-
 
         if not branch:
 
@@ -592,10 +539,6 @@ def predict():
                 400
             )
 
-
-        # -------------------------------------------------
-        # GET SKILLS
-        # -------------------------------------------------
 
         skills = {}
 
@@ -617,7 +560,6 @@ def predict():
                     400
                 )
 
-
             if value < 0 or value > 4:
 
                 return (
@@ -625,13 +567,8 @@ def predict():
                     400
                 )
 
-
             skills[field] = value
 
-
-        # -------------------------------------------------
-        # CREATE INPUT DATAFRAME
-        # -------------------------------------------------
 
         student = pd.DataFrame([
             {
@@ -640,10 +577,6 @@ def predict():
             }
         ])
 
-
-        # -------------------------------------------------
-        # PREDICTION
-        # -------------------------------------------------
 
         prediction = model.predict(
             student
@@ -658,9 +591,7 @@ def predict():
 
             try:
 
-                supabase.table(
-                    "assessments"
-                ).insert({
+                assessment_data = {
 
                     "branch":
                         branch,
@@ -698,11 +629,33 @@ def predict():
                     "predicted_career":
                         prediction
 
-                }).execute()
+                }
+
+
+                print(
+                    "SUPABASE ASSESSMENT INSERT:"
+                )
+
+                print(
+                    assessment_data
+                )
+
+
+                response = (
+                    supabase
+                    .table("assessments")
+                    .insert(assessment_data)
+                    .execute()
+                )
 
 
                 print(
                     "SUPABASE ASSESSMENT SAVED"
+                )
+
+                print(
+                    "SUPABASE RESPONSE:",
+                    response
                 )
 
 
@@ -714,18 +667,10 @@ def predict():
                 )
 
 
-        # -------------------------------------------------
-        # PREDICTION PROBABILITIES
-        # -------------------------------------------------
-
         probabilities = model.predict_proba(
             student
         )[0]
 
-
-        # -------------------------------------------------
-        # SORT PREDICTIONS
-        # -------------------------------------------------
 
         results = sorted(
 
@@ -739,10 +684,6 @@ def predict():
             reverse=True
         )
 
-
-        # -------------------------------------------------
-        # TOP 5
-        # -------------------------------------------------
 
         top_results = results[:5]
 
@@ -785,7 +726,6 @@ def predict():
                 importances
             ):
 
-                # Ignore branch encoded features
                 if feature_name.startswith(
                     "branch_"
                 ):
@@ -962,10 +902,6 @@ def predict():
             )
 
 
-        # =================================================
-        # RESULT PAGE
-        # =================================================
-
         return render_template(
 
             "result.html",
@@ -1011,20 +947,12 @@ def predict():
 )
 def feedback():
 
-    # -----------------------------------------------------
-    # SHOW FEEDBACK PAGE
-    # -----------------------------------------------------
-
     if request.method == "GET":
 
         return render_template(
             "feedback.html"
         )
 
-
-    # -----------------------------------------------------
-    # RECEIVE FEEDBACK
-    # -----------------------------------------------------
 
     name = request.form.get(
         "name",
@@ -1055,10 +983,6 @@ def feedback():
         ""
     ).strip()
 
-
-    # -----------------------------------------------------
-    # VALIDATION
-    # -----------------------------------------------------
 
     if not accuracy:
 
@@ -1125,10 +1049,6 @@ def feedback():
             400
         )
 
-
-    # -----------------------------------------------------
-    # SUPABASE
-    # -----------------------------------------------------
 
     if supabase is None:
 
@@ -1208,10 +1128,6 @@ def feedback():
 
         )
 
-
-    # -----------------------------------------------------
-    # SUCCESS
-    # -----------------------------------------------------
 
     return render_template(
         "feedback.html",
