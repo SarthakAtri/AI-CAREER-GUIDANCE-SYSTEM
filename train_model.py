@@ -126,14 +126,19 @@ y_pred = pipeline.predict(X_test)
 # 10. Calculate accuracy
 # -----------------------------------------
 
-accuracy = accuracy_score(y_test, y_pred)
+accuracy = accuracy_score(
+    y_test,
+    y_pred
+)
 
 print("\n-----------------------------------------")
 print("MODEL RESULTS")
 print("-----------------------------------------")
 
 print(f"Accuracy: {accuracy:.4f}")
-print(f"Accuracy percentage: {accuracy * 100:.2f}%")
+print(
+    f"Accuracy percentage: {accuracy * 100:.2f}%"
+)
 
 
 # -----------------------------------------

@@ -1,4 +1,5 @@
 import os
+import sqlite3
 
 import joblib
 import pandas as pd
@@ -30,6 +31,78 @@ MODEL_PATH = os.path.join(
     "career_model.pkl"
 )
 
+DB_PATH = os.path.join(
+    BASE_DIR,
+    "career_guidance.db"
+)
+
+
+# =========================================================
+# SQLITE DATABASE
+# =========================================================
+
+def save_assessment_sqlite(data):
+
+    connection = sqlite3.connect(DB_PATH)
+
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS assessments (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            branch TEXT NOT NULL,
+            programming INTEGER,
+            analytical_reasoning INTEGER,
+            hardware INTEGER,
+            mathematics INTEGER,
+            communication INTEGER,
+            data_structures INTEGER,
+            operating_systems INTEGER,
+            networking INTEGER,
+            digital_electronics INTEGER,
+            machine_learning INTEGER,
+            predicted_career TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
+    cursor.execute("""
+        INSERT INTO assessments (
+            branch,
+            programming,
+            analytical_reasoning,
+            hardware,
+            mathematics,
+            communication,
+            data_structures,
+            operating_systems,
+            networking,
+            digital_electronics,
+            machine_learning,
+            predicted_career
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        data["branch"],
+        data["programming"],
+        data["analytical_reasoning"],
+        data["hardware"],
+        data["mathematics"],
+        data["communication"],
+        data["data_structures"],
+        data["operating_systems"],
+        data["networking"],
+        data["digital_electronics"],
+        data["machine_learning"],
+        data["predicted_career"]
+    ))
+
+    connection.commit()
+    connection.close()
+
+    print("SQLITE ASSESSMENT SAVED")
+
+
 # =========================================================
 # SUPABASE
 # =========================================================
@@ -38,6 +111,7 @@ SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 print("SUPABASE URL:", SUPABASE_URL)
+
 print(
     "SUPABASE KEY PREFIX:",
     SUPABASE_KEY[:20] if SUPABASE_KEY else "NONE"
@@ -584,6 +658,72 @@ def predict():
 
 
         # =================================================
+        # SAVE ASSESSMENT TO SQLITE
+        # =================================================
+
+        sqlite_assessment_data = {
+
+            "branch":
+                branch,
+
+            "programming":
+                skills["programming"],
+
+            "analytical_reasoning":
+                skills["analytical_reasoning"],
+
+            "hardware":
+                skills["hardware"],
+
+            "mathematics":
+                skills["mathematics"],
+
+            "communication":
+                skills["communication"],
+
+            "data_structures":
+                skills["data_structures"],
+
+            "operating_systems":
+                skills["operating_systems"],
+
+            "networking":
+                skills["networking"],
+
+            "digital_electronics":
+                skills["digital_electronics"],
+
+            "machine_learning":
+                skills["machine_learning"],
+
+            "predicted_career":
+                prediction
+
+        }
+
+        try:
+
+            print(
+                "SQLITE ASSESSMENT INSERT:"
+            )
+
+            print(
+                sqlite_assessment_data
+            )
+
+            save_assessment_sqlite(
+                sqlite_assessment_data
+            )
+
+        except Exception as e:
+
+            print(
+                "SQLITE ASSESSMENT ERROR:",
+                e
+            )
+
+
+        # =================================================
         # SAVE ASSESSMENT TO SUPABASE
         # =================================================
 
@@ -666,6 +806,10 @@ def predict():
                     e
                 )
 
+
+        # =================================================
+        # CAREER PROBABILITIES
+        # =================================================
 
         probabilities = model.predict_proba(
             student
