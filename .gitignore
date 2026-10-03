@@ -6,3 +6,6 @@ __pycache__/
 .env
 app.py.save
 career_model.pkl
+app_sqlite_supabase_working_backup.py
+app_supabase_backup.py
+train_model_71_backup.py
