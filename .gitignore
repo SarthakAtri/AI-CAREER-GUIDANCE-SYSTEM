@@ -3,4 +3,5 @@ venv/
 __pycache__/
 *.pyc
 .DS_Store
-.envcareer_model.pkl
+.env
+app.py.save
