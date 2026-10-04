@@ -1,12 +1,19 @@
 import pandas as pd
 
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder, label_binarize
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.metrics import (
+    accuracy_score,
+    classification_report,
+    confusion_matrix,
+    roc_curve,
+    auc
+)
 
+import matplotlib.pyplot as plt
 import joblib
 
 
@@ -171,7 +178,94 @@ print(cm)
 
 
 # -----------------------------------------
-# 13. Save trained model
+# 13. ROC Curve
+# -----------------------------------------
+
+print("\nGenerating ROC Curve...")
+
+# Get prediction probabilities
+y_prob = pipeline.predict_proba(X_test)
+
+# Get all career classes
+classes = pipeline.classes_
+
+# Convert actual labels into binary format
+y_test_bin = label_binarize(
+    y_test,
+    classes=classes
+)
+
+# Create charts folder if it does not exist
+import os
+
+os.makedirs("charts", exist_ok=True)
+
+plt.figure(figsize=(10, 8))
+
+# Generate ROC curve for every career class
+for i, class_name in enumerate(classes):
+
+    fpr, tpr, _ = roc_curve(
+        y_test_bin[:, i],
+        y_prob[:, i]
+    )
+
+    roc_auc = auc(
+        fpr,
+        tpr
+    )
+
+    plt.plot(
+        fpr,
+        tpr,
+        linewidth=1.5,
+        label=f"{class_name} (AUC = {roc_auc:.2f})"
+    )
+
+
+# Random classifier reference line
+plt.plot(
+    [0, 1],
+    [0, 1],
+    linestyle="--",
+    linewidth=1,
+    label="Random Classifier"
+)
+
+
+plt.xlabel("False Positive Rate")
+plt.ylabel("True Positive Rate")
+
+plt.title(
+    "ROC Curve - Career Prediction Model"
+)
+
+plt.legend(
+    loc="lower right",
+    fontsize=7
+)
+
+plt.grid(
+    alpha=0.3
+)
+
+plt.tight_layout()
+
+
+# Save ROC curve
+plt.savefig(
+    "charts/06_roc_curve.png",
+    dpi=300
+)
+
+plt.close()
+
+print("ROC curve generated successfully!")
+print("File created: charts/06_roc_curve.png")
+
+
+# -----------------------------------------
+# 14. Save trained model
 # -----------------------------------------
 
 joblib.dump(
